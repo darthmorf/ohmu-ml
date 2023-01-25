@@ -1,0 +1,42 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1674664627",
+        "python_version": "3.7.8 (tags/v3.7.8:4b47a5b6ba, Jun 28 2020, 08:53:46) [MSC v.1916 64 bit (AMD64)]",
+        "command_line_arguments": "C:\\Users\\Sam\\AppData\\Roaming\\Python\\Python37\\Scripts\\mlagents-learn --run-id=BallBalancingAI --force --results-dir=./Assets/Training-Results",
+        "mlagents_version": "0.29.0",
+        "mlagents_envs_version": "0.29.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "1.13.1+cu116",
+        "numpy_version": "1.21.2",
+        "end_time_seconds": "1674664690"
+    },
+    "total": 62.50209569999999,
+    "count": 1,
+    "self": 0.0032057999999892672,
+    "children": {
+        "run_training.setup": {
+            "total": 0.11913699999999983,
+            "count": 1,
+            "self": 0.11913699999999983
+        },
+        "TrainerController.start_learning": {
+            "total": 62.3797529,
+            "count": 1,
+            "self": 0.00011070000000756863,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 62.379617999999994,
+                    "count": 1,
+                    "self": 62.379617999999994
+                },
+                "TrainerController._save_models": {
+                    "total": 2.4199999998586463e-05,
+                    "count": 1,
+                    "self": 2.4199999998586463e-05
+                }
+            }
+        }
+    }
+}
