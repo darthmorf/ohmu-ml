@@ -10,7 +10,7 @@ public class BallBalanceAgent : Agent
 {
     // Config Params
     [SerializeField] GameObject ball;
-    [SerializeField] GameObject cube;
+    [SerializeField] GameObject platform;
 
     // Cached Components
     Rigidbody ballRigidBody;
@@ -32,37 +32,41 @@ public class BallBalanceAgent : Agent
     {
         sensor.AddObservation(ballRigidBody.velocity);
         sensor.AddObservation(ball.transform.position);
-        sensor.AddObservation(cube.transform.rotation.z);
-        sensor.AddObservation(cube.transform.rotation.x);
+        sensor.AddObservation(platform.transform.rotation.z);
+        sensor.AddObservation(platform.transform.rotation.x);
     }
     public override void OnActionReceived(ActionBuffers actions)
     {
         const float actionThreshold = 0.25f;
 
+        const float ballFallenValue = -3f;
+        const float fallFailureReward = -1f;
+        const float angleFailureReward = -0.01f;
+        const float successReward = 0.1f;
+
+
         float zAngle = 2f * Mathf.Clamp(actions.ContinuousActions[0], -1f, 1f);
         float xAngle = 2f * Mathf.Clamp(actions.ContinuousActions[1], -1f, 1f);
 
-        // If the cube hasn't rotated more than the actionThreshold, rotate in that axis
-        if ( (cube.transform.rotation.z <  actionThreshold && zAngle > 0f) ||
-             (cube.transform.rotation.z > -actionThreshold && zAngle < 0f))
+        // Reduce the reward if the platform has over rotated
+        if ( (platform.transform.rotation.z <  actionThreshold && zAngle > 0f) ||
+             (platform.transform.rotation.z > -actionThreshold && zAngle < 0f))
         {
-            gameObject.transform.Rotate(new Vector3(0, 0, 1), zAngle);
+            platform.gameObject.transform.Rotate(new Vector3(0, 0, 1), zAngle);
         }
 
-        if ((cube.transform.rotation.x <  actionThreshold && xAngle > 0f) ||
-            (cube.transform.rotation.x > -actionThreshold && xAngle < 0f))
+        if ( (platform.transform.rotation.x <  actionThreshold && xAngle > 0f) ||
+             (platform.transform.rotation.x > -actionThreshold && xAngle < 0f))
         {
-            gameObject.transform.Rotate(new Vector3(1, 0, 0), xAngle);
-        }
+            platform.gameObject.transform.Rotate(new Vector3(1, 0, 0), xAngle);
+        }     
+        
 
         // Calculate Rewards
-        const float ballFallenValue = -3f;
-        const float failureReward = -1f;
-        const float successReward = 0.1f;
 
         if (ball.transform.position.y < ballFallenValue)
         {
-            SetReward(failureReward);
+            SetReward(fallFailureReward);
             EndEpisode();
         }
         else
@@ -79,9 +83,9 @@ public class BallBalanceAgent : Agent
     public override void OnEpisodeBegin()
     {
         // Reset Cube
-        cube.gameObject.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
-        cube.gameObject.transform.Rotate(new Vector3(1, 0, 0), Random.Range(-10f, 10f));
-        cube.gameObject.transform.Rotate(new Vector3(0, 0, 1), Random.Range(-10f, 10f));
+        platform.gameObject.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
+        platform.gameObject.transform.Rotate(new Vector3(1, 0, 0), Random.Range(-10f, 10f));
+        platform.gameObject.transform.Rotate(new Vector3(0, 0, 1), Random.Range(-10f, 10f));
 
         // Reset & Randomise Ball
         Vector3 randomBallOffset = new Vector3(Random.Range(-1.5f, 1.5f), 0f, Random.Range(-1.5f, 1.5f));
