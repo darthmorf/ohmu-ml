@@ -1,0 +1,38 @@
+{
+    "Ball Balancer": {
+        "checkpoints": [
+            {
+                "steps": 499979,
+                "file_path": "./Assets/Training-Results\\BallBalancingAI_003\\Ball Balancer\\Ball Balancer-499979.onnx",
+                "reward": null,
+                "creation_time": 1674741875.0345118,
+                "auxillary_file_paths": [
+                    "./Assets/Training-Results\\BallBalancingAI_003\\Ball Balancer\\Ball Balancer-499979.pt"
+                ]
+            },
+            {
+                "steps": 500043,
+                "file_path": "./Assets/Training-Results\\BallBalancingAI_003\\Ball Balancer\\Ball Balancer-500043.onnx",
+                "reward": null,
+                "creation_time": 1674741875.1161747,
+                "auxillary_file_paths": [
+                    "./Assets/Training-Results\\BallBalancingAI_003\\Ball Balancer\\Ball Balancer-500043.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 500043,
+            "file_path": "./Assets/Training-Results\\BallBalancingAI_003\\Ball Balancer.onnx",
+            "reward": null,
+            "creation_time": 1674741875.1161747,
+            "auxillary_file_paths": [
+                "./Assets/Training-Results\\BallBalancingAI_003\\Ball Balancer\\Ball Balancer-500043.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.29.0",
+        "torch_version": "1.13.1+cu116"
+    }
+}
