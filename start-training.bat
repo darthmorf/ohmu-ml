@@ -1,2 +1,2 @@
-mlagents-learn --run-id=BallBalancingAI_002 --force --results-dir="./Assets/Training-Results"
+mlagents-learn --run-id=BallBalancingAI_003 --force --results-dir="./Assets/Training-Results"
 pause
