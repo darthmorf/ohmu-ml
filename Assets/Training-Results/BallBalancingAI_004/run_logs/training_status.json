@@ -9,15 +9,33 @@
                 "auxillary_file_paths": [
                     "./Assets/Training-Results\\BallBalancingAI_004\\Ball Balancer\\Ball Balancer-154386.pt"
                 ]
+            },
+            {
+                "steps": 499945,
+                "file_path": "./Assets/Training-Results\\BallBalancingAI_004\\Ball Balancer\\Ball Balancer-499945.onnx",
+                "reward": 0.9545454545454546,
+                "creation_time": 1674768750.055726,
+                "auxillary_file_paths": [
+                    "./Assets/Training-Results\\BallBalancingAI_004\\Ball Balancer\\Ball Balancer-499945.pt"
+                ]
+            },
+            {
+                "steps": 500001,
+                "file_path": "./Assets/Training-Results\\BallBalancingAI_004\\Ball Balancer\\Ball Balancer-500001.onnx",
+                "reward": 0.9548872180451128,
+                "creation_time": 1674768750.1147392,
+                "auxillary_file_paths": [
+                    "./Assets/Training-Results\\BallBalancingAI_004\\Ball Balancer\\Ball Balancer-500001.pt"
+                ]
             }
         ],
         "final_checkpoint": {
-            "steps": 154386,
+            "steps": 500001,
             "file_path": "./Assets/Training-Results\\BallBalancingAI_004\\Ball Balancer.onnx",
-            "reward": 1.0,
-            "creation_time": 1674765991.0353906,
+            "reward": 0.9548872180451128,
+            "creation_time": 1674768750.1147392,
             "auxillary_file_paths": [
-                "./Assets/Training-Results\\BallBalancingAI_004\\Ball Balancer\\Ball Balancer-154386.pt"
+                "./Assets/Training-Results\\BallBalancingAI_004\\Ball Balancer\\Ball Balancer-500001.pt"
             ]
         }
     },
