@@ -11,7 +11,8 @@ public class BallBalanceAgent : Agent
     // Config Params
     [SerializeField] GameObject ball;
     [SerializeField] GameObject platform;
-    [SerializeField] GameObject ballFallenThreshold;
+    [SerializeField] GameObject goal;
+    [SerializeField] float ballFallenThreshold = -6;
     [SerializeField] float randomBallOffsetRange;
 
     // Cached Components
@@ -33,6 +34,7 @@ public class BallBalanceAgent : Agent
     }
     public override void CollectObservations(VectorSensor sensor)
     {
+        sensor.AddObservation(goal.transform.position);
         sensor.AddObservation(ballRigidBody.velocity);
         sensor.AddObservation(ball.transform.position);
         sensor.AddObservation(platform.transform.rotation.z);
@@ -43,12 +45,12 @@ public class BallBalanceAgent : Agent
         const float angleThreshold = 0.25f;
 
         const float fallFailureReward = -1f;
-        const float successReward = 1f;
-
-        float ballFallenValue = ballFallenThreshold.transform.position.y;
+        const float successReward = 2f;
 
         float zAngle = 2f * Mathf.Clamp(actions.ContinuousActions[0], -1f, 1f);
         float xAngle = 2f * Mathf.Clamp(actions.ContinuousActions[1], -1f, 1f);
+
+        AddReward(-0.001f);
 
         // Reduce the reward if the platform has over rotated
         if ( (platform.transform.rotation.z <  angleThreshold && zAngle > 0f) ||
@@ -66,7 +68,7 @@ public class BallBalanceAgent : Agent
 
         // Calculate Rewards
 
-        if (ball.transform.position.y < ballFallenValue)
+        if (ball.transform.position.y < ballFallenThreshold)
         {
             SetReward(fallFailureReward);
             EndEpisode();
