@@ -1,0 +1,47 @@
+{
+    "Ball Balancer": {
+        "checkpoints": [
+            {
+                "steps": 499987,
+                "file_path": "./Assets/Training-Results\\MazeSolver001\\Ball Balancer\\Ball Balancer-499987.onnx",
+                "reward": -1.7671577812495984,
+                "creation_time": 1674843104.2390943,
+                "auxillary_file_paths": [
+                    "./Assets/Training-Results\\MazeSolver001\\Ball Balancer\\Ball Balancer-499987.pt"
+                ]
+            },
+            {
+                "steps": 999958,
+                "file_path": "./Assets/Training-Results\\MazeSolver001\\Ball Balancer\\Ball Balancer-999958.onnx",
+                "reward": null,
+                "creation_time": 1674846733.9528372,
+                "auxillary_file_paths": [
+                    "./Assets/Training-Results\\MazeSolver001\\Ball Balancer\\Ball Balancer-999958.pt"
+                ]
+            },
+            {
+                "steps": 1000022,
+                "file_path": "./Assets/Training-Results\\MazeSolver001\\Ball Balancer\\Ball Balancer-1000022.onnx",
+                "reward": null,
+                "creation_time": 1674846734.0298374,
+                "auxillary_file_paths": [
+                    "./Assets/Training-Results\\MazeSolver001\\Ball Balancer\\Ball Balancer-1000022.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1000022,
+            "file_path": "./Assets/Training-Results\\MazeSolver001\\Ball Balancer.onnx",
+            "reward": null,
+            "creation_time": 1674846734.0298374,
+            "auxillary_file_paths": [
+                "./Assets/Training-Results\\MazeSolver001\\Ball Balancer\\Ball Balancer-1000022.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.29.0",
+        "torch_version": "1.13.1+cu116"
+    }
+}
