@@ -19,10 +19,12 @@ public class BallBalanceAgent : Agent
     [SerializeField] float maxHorizontalWallWidth = 14f;
     [SerializeField] float minHorizontalWallWidth = 10f;
     [SerializeField] float horizontalWallMaxOffset = 2f;
+    [SerializeField] float maxTime = 60f;
 
 
     // Cached Components
     Rigidbody ballRigidBody;
+    Rigidbody platformRigidBody;
     EnvironmentParameters defaultParameters;
 
     // State
@@ -30,10 +32,12 @@ public class BallBalanceAgent : Agent
     Vector3 initialGoalPos;
     Vector3[] initialHorizontalWallPositions;
     bool goalReached = false;
+    float elapsedTime = 0f;
 
     public override void Initialize()
     {
         ballRigidBody = ball.GetComponent<Rigidbody>();
+        platformRigidBody = platform.GetComponent<Rigidbody>();
         defaultParameters = Academy.Instance.EnvironmentParameters;
 
         initialBallPos = ball.transform.position;
@@ -72,17 +76,26 @@ public class BallBalanceAgent : Agent
         if ( (platform.transform.rotation.z <  angleThreshold && zAngle > 0f) ||
              (platform.transform.rotation.z > -angleThreshold && zAngle < 0f))
         {
-            platform.gameObject.transform.Rotate(new Vector3(0, 0, 1), zAngle);
+            Quaternion rotation = Quaternion.Euler(0, 0, zAngle);
+            platformRigidBody.MoveRotation(platformRigidBody.rotation * rotation);
         }
 
         if ( (platform.transform.rotation.x <  angleThreshold && xAngle > 0f) ||
              (platform.transform.rotation.x > -angleThreshold && xAngle < 0f))
         {
-            platform.gameObject.transform.Rotate(new Vector3(1, 0, 0), xAngle);
-        }     
-        
+            Quaternion rotation = Quaternion.Euler(xAngle, 0, 0);
+            platformRigidBody.MoveRotation(platformRigidBody.rotation * rotation); 
+        }
+
+        elapsedTime += Time.deltaTime;
 
         // Calculate Rewards
+
+        if (elapsedTime >= maxTime)
+        {
+            SetReward(fallFailureReward);
+            EndEpisode();
+        }
 
         if (ball.transform.position.y < ballFallenThreshold)
         {
@@ -116,12 +129,15 @@ public class BallBalanceAgent : Agent
         for (int i = 0; i < horizontalWalls.Length; i++)
         {
             Vector3 randomWallOffset = new Vector3(Random.Range(-horizontalWallMaxOffset, horizontalWallMaxOffset), 0f, 0f);
+          //  float randomWallWidth = Random.Range(minHorizontalWallWidth, maxHorizontalWallWidth);
             horizontalWalls[i].transform.position = initialHorizontalWallPositions[i] + randomWallOffset;
+          //  horizontalWalls[i].transform.localScale = new Vector3(randomWallWidth, horizontalWalls[i].transform.localScale.y, horizontalWalls[i].transform.localScale.z);
         }
 
         // Reset & randomise Ball
         Vector3 randomBallOffset = new Vector3(Random.Range(-goalBallHorizontalMaxOffset, goalBallHorizontalMaxOffset), 0f, 0f);
-        
+
+        ball.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
         ballRigidBody.velocity = new Vector3(0f, 0f, 0f);
         ball.transform.position = initialBallPos + randomBallOffset;
 
@@ -131,6 +147,7 @@ public class BallBalanceAgent : Agent
 
         // Other state resets
         goalReached = false;
+        elapsedTime = 0;
     }
 
     public void UpdateGoal(bool status)

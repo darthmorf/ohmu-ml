@@ -36,7 +36,7 @@ public class TrainingController : EditorWindow
 
         if (GUILayout.Button("Resume Training"))
         {
-            StartTraining(false);
+            StartTraining(true);
         }
     }
 

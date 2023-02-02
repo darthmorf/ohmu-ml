@@ -13,9 +13,9 @@ public class GoalTrigger : MonoBehaviour
         agent = GameObject.FindGameObjectWithTag("Agent").GetComponent<BallBalanceAgent>();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collider)
     {
-        if (collision.gameObject.tag == "Ball")
+        if (collider.gameObject.tag == "Ball")
         {
             agent.UpdateGoal(true);
         }
