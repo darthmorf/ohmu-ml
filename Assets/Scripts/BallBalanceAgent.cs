@@ -12,8 +12,14 @@ public class BallBalanceAgent : Agent
     [SerializeField] GameObject ball;
     [SerializeField] GameObject platform;
     [SerializeField] GameObject goal;
+    [SerializeField] GameObject[] horizontalWalls;
+    [Space]
     [SerializeField] float ballFallenThreshold = -6;
-    [SerializeField] float randomBallOffsetRange;
+    [SerializeField] float goalBallHorizontalMaxOffset = 6f;
+    [SerializeField] float maxHorizontalWallWidth = 14f;
+    [SerializeField] float minHorizontalWallWidth = 10f;
+    [SerializeField] float horizontalWallMaxOffset = 2f;
+
 
     // Cached Components
     Rigidbody ballRigidBody;
@@ -21,6 +27,8 @@ public class BallBalanceAgent : Agent
 
     // State
     Vector3 initialBallPos;
+    Vector3 initialGoalPos;
+    Vector3[] initialHorizontalWallPositions;
     bool goalReached = false;
 
     public override void Initialize()
@@ -29,6 +37,14 @@ public class BallBalanceAgent : Agent
         defaultParameters = Academy.Instance.EnvironmentParameters;
 
         initialBallPos = ball.transform.position;
+        initialGoalPos = goal.transform.position;
+
+        initialHorizontalWallPositions = new Vector3[horizontalWalls.Length];
+
+        for (int i = 0; i < horizontalWalls.Length; i++)
+        {
+            initialHorizontalWallPositions[i] = horizontalWalls[i].transform.position;
+        }
 
         ResetScene();
     }
@@ -88,25 +104,33 @@ public class BallBalanceAgent : Agent
     }
     public override void OnEpisodeBegin()
     {
-        // Reset Platform
-        platform.gameObject.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
-        //platform.gameObject.transform.Rotate(new Vector3(1, 0, 0), Random.Range(-10f, 10f));
-        //platform.gameObject.transform.Rotate(new Vector3(0, 0, 1), Random.Range(-10f, 10f));
-
-        // Reset & Randomise Ball
-        Vector3 randomBallOffset = new Vector3(Random.Range(-randomBallOffsetRange, randomBallOffsetRange), 0f, Random.Range(-randomBallOffsetRange, randomBallOffsetRange));
-        ballRigidBody.velocity = new Vector3(0f, 0f, 0f);
-        ball.transform.position = initialBallPos + randomBallOffset;
-        
         ResetScene();
     }
 
     void ResetScene()
     {
+        // Reset Platform
+        platform.gameObject.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
+
+        // Reset & randomise Walls
+        for (int i = 0; i < horizontalWalls.Length; i++)
+        {
+            Vector3 randomWallOffset = new Vector3(Random.Range(-horizontalWallMaxOffset, horizontalWallMaxOffset), 0f, 0f);
+            horizontalWalls[i].transform.position = initialHorizontalWallPositions[i] + randomWallOffset;
+        }
+
+        // Reset & randomise Ball
+        Vector3 randomBallOffset = new Vector3(Random.Range(-goalBallHorizontalMaxOffset, goalBallHorizontalMaxOffset), 0f, 0f);
+        
+        ballRigidBody.velocity = new Vector3(0f, 0f, 0f);
+        ball.transform.position = initialBallPos + randomBallOffset;
+
+        // Reset & randomise Goal
+        Vector3 randomGoalOffset = new Vector3(Random.Range(-goalBallHorizontalMaxOffset, goalBallHorizontalMaxOffset), 0f, 0f);
+        goal.transform.position = initialGoalPos + randomGoalOffset;
+
+        // Other state resets
         goalReached = false;
-        float scale = defaultParameters.GetWithDefault("scale", 1f);
-        ball.transform.localScale = new Vector3(scale, scale, scale);
-        ballRigidBody.mass = defaultParameters.GetWithDefault("mass", 1f);
     }
 
     public void UpdateGoal(bool status)
