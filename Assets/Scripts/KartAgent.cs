@@ -1,89 +1,118 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
+using Unity.MLAgents;
+using Unity.MLAgents.Sensors;
+using Unity.MLAgents.Actuators;
 using UnityEngine.InputSystem;
-using Quaternion = UnityEngine.Quaternion;
+using System;
 
-public class KartAgent : MonoBehaviour
+public class KartAgent : Agent
 {
-    // Cached Components
-    Rigidbody rigidBody;
-
     // Config Params
-    [SerializeField] float speed = 10.0f;
-    [SerializeField] float steerSpeed = 5;
-    [SerializeField] float maxSteerAngle = 30.0f;
-    [SerializeField] float brakeTorque = 50.0f;
-    [SerializeField] WheelCollider frontL;
-    [SerializeField] WheelCollider frontR;
-    [SerializeField] WheelCollider backL;
-    [SerializeField] WheelCollider backR;
+    [SerializeField] float debugRaycastTime = 2f;
+    [SerializeField] float raycastDistance = 10;
+    [SerializeField] float failRaycastDistance = 1;
+    [SerializeField] Transform[] raycasts;
+    [SerializeField] LayerMask raycastLayers;
+    [SerializeField] KartController kartController;
+
+    // Cached Components
 
     // State
-    float currentSteerAngle = 0;
+    Vector3 startPos;
+    Quaternion startRot;
+    bool failed = false;
 
-    void Start()
+    public override void Initialize()
     {
-        rigidBody = GetComponent<Rigidbody>();
+        startPos = kartController.transform.position;
+        startRot = kartController.transform.rotation;
+        ResetScene();
     }
 
-    private void Update()
+    public override void CollectObservations(VectorSensor sensor)
     {
-        DoMovement();
+        sensor.AddObservation(kartController.GetRigidbody().velocity.magnitude);
+       
+        foreach(Transform raycast in raycasts)
+        {
+            AddRaycastVectorObservation(raycast, sensor);
+        }
     }
 
-    void DoMovement()
+    void AddRaycastVectorObservation(Transform ray, VectorSensor sensor)
     {
-        if (Keyboard.current.spaceKey.isPressed)
+        RaycastHit hitInfo = new RaycastHit();
+        bool hit = Physics.Raycast(ray.position, ray.forward, out hitInfo, raycastDistance, raycastLayers.value, QueryTriggerInteraction.Ignore);
+        float distance = hitInfo.distance;
+
+        if (!hit)
         {
-            frontL.brakeTorque = brakeTorque;
-            frontR.brakeTorque = brakeTorque;
-            backL.brakeTorque = brakeTorque;
-            backR.brakeTorque = brakeTorque;
-        }
-        else
-        {
-            frontL.brakeTorque = 0;
-            frontR.brakeTorque = 0;
-            backL.brakeTorque = 0;
-            backR.brakeTorque = 0;
-        }
-        
-        
-        if (Keyboard.current.wKey.isPressed)
-        {
-            frontL.motorTorque = speed;
-            frontR.motorTorque = speed;
-        }
-        else if (Keyboard.current.sKey.isPressed)
-        {
-            frontL.motorTorque = -speed / 2;
-            frontR.motorTorque = -speed / 2;
+            distance = raycastDistance;
         }
 
-        
+        float obs = distance / raycastDistance;
+        sensor.AddObservation(obs);
 
-        if (Keyboard.current.aKey.isPressed)
+        if (distance < failRaycastDistance)
         {
-            currentSteerAngle -= steerSpeed * Time.deltaTime;
-        }
-        else if (Keyboard.current.dKey.isPressed)
-        {
-            currentSteerAngle += steerSpeed * Time.deltaTime;
-        }
-        else if (currentSteerAngle < 0)
-        {
-            currentSteerAngle += steerSpeed * Time.deltaTime;
-        }
-        else
-        {
-            currentSteerAngle -= steerSpeed * Time.deltaTime;
+            failed = true;
         }
 
-        currentSteerAngle = Mathf.Clamp(currentSteerAngle, -maxSteerAngle, maxSteerAngle);
+        Debug.DrawRay(ray.position, ray.forward * distance, Color.Lerp(Color.red, Color.green, obs), Time.deltaTime * debugRaycastTime);
+    }
 
-        frontL.steerAngle = currentSteerAngle;
-        frontR.steerAngle = currentSteerAngle;
+    public override void OnActionReceived(ActionBuffers actions)
+    {
+        kartController.forward = false;
+        kartController.backward = false;
+        kartController.left = false;
+        kartController.right = false;
+        kartController.handbreak = false;
+
+        kartController.forward = actions.ContinuousActions[0] > 0;
+        kartController.backward = actions.ContinuousActions[0] < 0;
+        kartController.left = actions.ContinuousActions[1] < -0.25f;
+        kartController.right = actions.ContinuousActions[1] > 00.25f;
+     //   kartController.handbreak = actions.ContinuousActions[2] > 0;
+
+        AddReward(kartController.GetRigidbody().velocity.magnitude * 0.001f);
+
+        if (failed)
+        {
+            Failure();
+        }
+
+        ShowReward();
+    }
+
+    void Failure()
+    {
+        AddReward(-1f);
+        ShowReward();
+        EndEpisode();
+    }
+
+    public override void OnEpisodeBegin()
+    {
+        ResetScene();
+    }
+
+    void ResetScene()
+    {
+        kartController.transform.position = startPos;
+        kartController.transform.rotation = startRot;
+        failed = false;
+    }
+
+    public override void Heuristic(in ActionBuffers actionsOut)
+    {
+        base.Heuristic(actionsOut);
+    }
+
+    private void ShowReward()
+    {
+        Debug.Log($"Current Reward: {GetCumulativeReward()}");
     }
 }
