@@ -13,12 +13,14 @@ public class BallBalanceAgent : Agent
     [SerializeField] GameObject platform;
     [SerializeField] GameObject goal;
     [SerializeField] GameObject[] horizontalWalls;
+    [SerializeField] GameObject[] verticalWalls;
     [Space]
     [SerializeField] float ballFallenThreshold = -6;
     [SerializeField] float goalBallHorizontalMaxOffset = 6f;
     [SerializeField] float maxHorizontalWallWidth = 14f;
     [SerializeField] float minHorizontalWallWidth = 10f;
     [SerializeField] float horizontalWallMaxOffset = 2f;
+    [SerializeField] float verticalWallMaxOffset = 1f;
     [SerializeField] float maxTime = 60f;
 
 
@@ -31,6 +33,7 @@ public class BallBalanceAgent : Agent
     Vector3 initialBallPos;
     Vector3 initialGoalPos;
     Vector3[] initialHorizontalWallPositions;
+    Vector3[] initialVerticalWallPositions;
     bool goalReached = false;
     float elapsedTime = 0f;
 
@@ -44,10 +47,16 @@ public class BallBalanceAgent : Agent
         initialGoalPos = goal.transform.position;
 
         initialHorizontalWallPositions = new Vector3[horizontalWalls.Length];
+        initialVerticalWallPositions = new Vector3[verticalWalls.Length];
 
         for (int i = 0; i < horizontalWalls.Length; i++)
         {
             initialHorizontalWallPositions[i] = horizontalWalls[i].transform.position;
+        }
+
+        for (int i = 0; i < verticalWalls.Length; i++)
+        {
+            initialVerticalWallPositions[i] = verticalWalls[i].transform.position;
         }
 
         ResetScene();
@@ -72,7 +81,6 @@ public class BallBalanceAgent : Agent
 
         AddReward(-0.001f);
 
-        // Reduce the reward if the platform has over rotated
         if ( (platform.transform.rotation.z <  angleThreshold && zAngle > 0f) ||
              (platform.transform.rotation.z > -angleThreshold && zAngle < 0f))
         {
@@ -91,7 +99,7 @@ public class BallBalanceAgent : Agent
 
         // Calculate Rewards
 
-        if (elapsedTime >= maxTime)
+        if (elapsedTime >= maxTime && maxTime != 0)
         {
             SetReward(fallFailureReward);
             EndEpisode();
@@ -132,6 +140,12 @@ public class BallBalanceAgent : Agent
           //  float randomWallWidth = Random.Range(minHorizontalWallWidth, maxHorizontalWallWidth);
             horizontalWalls[i].transform.position = initialHorizontalWallPositions[i] + randomWallOffset;
           //  horizontalWalls[i].transform.localScale = new Vector3(randomWallWidth, horizontalWalls[i].transform.localScale.y, horizontalWalls[i].transform.localScale.z);
+        }
+
+        for (int i = 0; i < verticalWalls.Length; i++)
+        {
+            Vector3 randomWallOffset = new Vector3(0f, 0f, Random.Range(-verticalWallMaxOffset, verticalWallMaxOffset));
+            verticalWalls[i].transform.position = initialVerticalWallPositions[i] + randomWallOffset;
         }
 
         // Reset & randomise Ball
