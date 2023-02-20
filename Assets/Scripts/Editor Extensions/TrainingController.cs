@@ -29,6 +29,7 @@ public class TrainingController : EditorWindow
 
         EditorGUILayout.Space();
 
+        GUILayout.BeginHorizontal();
         if (GUILayout.Button("Start Training"))
         {
             StartTraining(false);
@@ -38,9 +39,17 @@ public class TrainingController : EditorWindow
         {
             StartTraining(true);
         }
+        GUILayout.EndHorizontal();
+
+        EditorGUILayout.Space();
+
+        if (GUILayout.Button("Start Tensorboard"))
+        {
+            StartTensorboard();
+        }
     }
 
-    public void StartTraining(bool resume)
+    private void StartTraining(bool resume)
     {
         process = new Process();
 
@@ -57,5 +66,19 @@ public class TrainingController : EditorWindow
         process.StartInfo.CreateNoWindow = false;
 
         process.Start();
+    }
+
+    private void StartTensorboard()
+    {
+        process = new Process();
+
+        process.StartInfo.FileName = "cmd.exe";
+        process.StartInfo.Arguments = $"/C tensorboard --logdir=summaries";
+        process.StartInfo.UseShellExecute = true;
+        process.StartInfo.CreateNoWindow = false;
+
+        process.Start();
+
+        Application.OpenURL("http://localhost:6006/");
     }
 }
