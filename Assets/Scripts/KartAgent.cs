@@ -6,6 +6,7 @@ using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using UnityEngine.InputSystem;
 using System;
+using UnityEditor.PackageManager.Requests;
 
 public class KartAgent : Agent
 {
@@ -16,6 +17,9 @@ public class KartAgent : Agent
     [SerializeField] Transform[] raycasts;
     [SerializeField] LayerMask raycastLayers;
     [SerializeField] KartController kartController;
+    [SerializeField] RaceCheckpoint[] checkpoints;
+    [SerializeField] bool handBreakEnabled = false;
+    [SerializeField] bool reverseEnabled = false;
 
     // Cached Components
 
@@ -23,6 +27,7 @@ public class KartAgent : Agent
     Vector3 startPos;
     Quaternion startRot;
     bool failed = false;
+    int checkpointIndex = 0;
 
     public override void Initialize()
     {
@@ -72,10 +77,12 @@ public class KartAgent : Agent
         kartController.handbreak = false;
 
         kartController.forward = actions.ContinuousActions[0] > 0;
-        kartController.backward = actions.ContinuousActions[0] < 0;
+        kartController.backward = actions.ContinuousActions[0] < 0 && reverseEnabled;
         kartController.left = actions.ContinuousActions[1] < -0.25f;
         kartController.right = actions.ContinuousActions[1] > 00.25f;
-     //   kartController.handbreak = actions.ContinuousActions[2] > 0;
+        kartController.handbreak = actions.ContinuousActions[2] > 0 && handBreakEnabled;
+
+        CheckCheckpoints();
 
         AddReward(kartController.GetRigidbody().velocity.magnitude * 0.001f);
 
@@ -85,6 +92,20 @@ public class KartAgent : Agent
         }
 
         ShowReward();
+    }
+
+    void CheckCheckpoints()
+    {
+        if (checkpoints[checkpointIndex].KartHitCheckpoint())
+        {
+            Debug.Log($"Checkpoint {checkpointIndex+1} hit!");
+            AddReward(0.5f);
+            checkpoints[checkpointIndex].Reset();
+            checkpoints[checkpointIndex].gameObject.SetActive(false);
+
+            checkpointIndex = (checkpointIndex + 1) % checkpoints.Length;
+            checkpoints[checkpointIndex].gameObject.SetActive(true);
+        }
     }
 
     void Failure()
@@ -97,6 +118,14 @@ public class KartAgent : Agent
     public override void OnEpisodeBegin()
     {
         ResetScene();
+
+        foreach(RaceCheckpoint checkpoint in checkpoints)
+        {
+            checkpoint.gameObject.SetActive(false);
+        }
+
+        checkpointIndex = 0;
+        checkpoints[checkpointIndex].gameObject.SetActive(true);
     }
 
     void ResetScene()
