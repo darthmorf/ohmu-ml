@@ -7,6 +7,7 @@ using Unity.MLAgents.Actuators;
 using UnityEngine.InputSystem;
 using System;
 using UnityEditor.PackageManager.Requests;
+using Unity.VisualScripting;
 
 public class KartAgent : Agent
 {
@@ -20,6 +21,11 @@ public class KartAgent : Agent
     [SerializeField] RaceCheckpoint[] checkpoints;
     [SerializeField] bool handBreakEnabled = false;
     [SerializeField] bool reverseEnabled = false;
+ 
+    [Header("Rewards")]
+    [SerializeField] float stepReward = 0.001f;
+    [SerializeField] float failReward = -1f;
+    [SerializeField] float checkpointReward = 0.5f;
 
     // Cached Components
 
@@ -84,7 +90,7 @@ public class KartAgent : Agent
 
         CheckCheckpoints();
 
-        AddReward(kartController.GetRigidbody().velocity.magnitude * 0.001f);
+        AddReward(kartController.GetRigidbody().velocity.magnitude * stepReward);
 
         if (failed)
         {
@@ -99,7 +105,9 @@ public class KartAgent : Agent
         if (checkpoints[checkpointIndex].KartHitCheckpoint())
         {
             Debug.Log($"Checkpoint {checkpointIndex+1} hit!");
-            AddReward(0.5f);
+
+            AddReward(checkpointReward);
+
             checkpoints[checkpointIndex].Reset();
             checkpoints[checkpointIndex].gameObject.SetActive(false);
 
@@ -110,7 +118,7 @@ public class KartAgent : Agent
 
     void Failure()
     {
-        AddReward(-1f);
+        AddReward(failReward);
         ShowReward();
         EndEpisode();
     }

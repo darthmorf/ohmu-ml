@@ -1845,6 +1845,18 @@ PrefabInstance:
       value: Agent
       objectReference: {fileID: 0}
     - target: {fileID: 8593460211266452154, guid: ad7b5fd5278aee645ad5786a4b093653, type: 3}
+      propertyPath: failReward
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8593460211266452154, guid: ad7b5fd5278aee645ad5786a4b093653, type: 3}
+      propertyPath: stepReward
+      value: 0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 8593460211266452154, guid: ad7b5fd5278aee645ad5786a4b093653, type: 3}
+      propertyPath: checkpointReward
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8593460211266452154, guid: ad7b5fd5278aee645ad5786a4b093653, type: 3}
       propertyPath: checkpoints.Array.size
       value: 8
       objectReference: {fileID: 0}
