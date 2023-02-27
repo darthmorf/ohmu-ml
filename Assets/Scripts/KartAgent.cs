@@ -15,9 +15,8 @@ public class KartAgent : Agent
     [SerializeField] float debugRaycastTime = 2f;
     [SerializeField] float raycastDistance = 10;
     [SerializeField] float failRaycastDistance = 1;
-    [SerializeField] Transform[] raycasts;
-    [SerializeField] LayerMask raycastLayers;
     [SerializeField] KartController kartController;
+    [SerializeField] TerrainCollider terrainCollider;
     [SerializeField] RaceCheckpoint[] checkpoints;
     [SerializeField] bool handBreakEnabled = false;
     [SerializeField] bool reverseEnabled = false;
@@ -45,37 +44,13 @@ public class KartAgent : Agent
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation(kartController.GetRigidbody().velocity.magnitude);
-       
-        foreach(Transform raycast in raycasts)
-        {
-            AddRaycastVectorObservation(raycast, sensor);
-        }
-    }
-
-    void AddRaycastVectorObservation(Transform ray, VectorSensor sensor)
-    {
-        RaycastHit hitInfo = new RaycastHit();
-        bool hit = Physics.Raycast(ray.position, ray.forward, out hitInfo, raycastDistance, raycastLayers.value, QueryTriggerInteraction.Ignore);
-        float distance = hitInfo.distance;
-
-        if (!hit)
-        {
-            distance = raycastDistance;
-        }
-
-        float obs = distance / raycastDistance;
-        sensor.AddObservation(obs);
-
-        if (distance < failRaycastDistance)
-        {
-            failed = true;
-        }
-
-        Debug.DrawRay(ray.position, ray.forward * distance, Color.Lerp(Color.red, Color.green, obs), Time.deltaTime * debugRaycastTime);
+        sensor.AddObservation(Vector3.Distance(transform.position, checkpoints[checkpointIndex].transform.position));
     }
 
     public override void OnActionReceived(ActionBuffers actions)
     {
+        const float steeringRange = 0.3f;
+
         kartController.forward = false;
         kartController.backward = false;
         kartController.left = false;
@@ -84,15 +59,17 @@ public class KartAgent : Agent
 
         kartController.forward = actions.ContinuousActions[0] > 0;
         kartController.backward = actions.ContinuousActions[0] < 0 && reverseEnabled;
-        kartController.left = actions.ContinuousActions[1] < -0.25f;
-        kartController.right = actions.ContinuousActions[1] > 00.25f;
+        kartController.left = actions.ContinuousActions[1] < -steeringRange;
+        kartController.right = actions.ContinuousActions[1] > steeringRange;
         kartController.handbreak = actions.ContinuousActions[2] > 0 && handBreakEnabled;
+
+        failed = terrainCollider.agentCollided;
 
         CheckCheckpoints();
 
         AddReward(kartController.GetRigidbody().velocity.magnitude * stepReward);
 
-        if (failed)
+        if (failed || Keyboard.current.rKey.isPressed)
         {
             Failure();
         }
@@ -140,7 +117,9 @@ public class KartAgent : Agent
     {
         kartController.transform.position = startPos;
         kartController.transform.rotation = startRot;
+        kartController.GetRigidbody().velocity = Vector3.zero;
         failed = false;
+        terrainCollider.agentCollided = false;
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
