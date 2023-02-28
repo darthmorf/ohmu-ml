@@ -5,6 +5,7 @@ using System.Numerics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 public class KartController : MonoBehaviour
 {
@@ -30,10 +31,14 @@ public class KartController : MonoBehaviour
 
     // State
     float currentSteerAngle = 0;
+    Vector3 startPos;
+    Quaternion startRot;
 
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
+        startPos = transform.position;
+        startRot = transform.rotation;
     }
 
     private void Update()
@@ -98,5 +103,13 @@ public class KartController : MonoBehaviour
     public Rigidbody GetRigidbody()
     {
         return rigidBody;
+    }
+
+    public void Reset_()
+    {
+        transform.position = startPos;
+        transform.rotation = startRot;
+
+        rigidBody.velocity = Vector3.zero;
     }
 }

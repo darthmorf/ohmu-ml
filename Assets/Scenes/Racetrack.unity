@@ -342,7 +342,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f682db12f5b1dd4b90d26102adc9f9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agentCollided: 0
 --- !u!1 &53370379
 GameObject:
   m_ObjectHideFlags: 0
@@ -2923,13 +2922,13 @@ PrefabInstance:
       value: Agent
       objectReference: {fileID: 0}
     - target: {fileID: 8593460211266452154, guid: ad7b5fd5278aee645ad5786a4b093653, type: 3}
-      propertyPath: MaxStep
-      value: 500000
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8593460211266452154, guid: ad7b5fd5278aee645ad5786a4b093653, type: 3}
       propertyPath: terrainCollider
       value: 
-      objectReference: {fileID: 50676080}
+      objectReference: {fileID: 50676082}
     - target: {fileID: 8593460211266452154, guid: ad7b5fd5278aee645ad5786a4b093653, type: 3}
       propertyPath: checkpoints.Array.data[0]
       value: 
@@ -2994,6 +2993,22 @@ PrefabInstance:
       propertyPath: checkpoints.Array.data[15]
       value: 
       objectReference: {fileID: 587020884}
+    - target: {fileID: 8593460211266452155, guid: ad7b5fd5278aee645ad5786a4b093653, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSpaceType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8593460211266452155, guid: ad7b5fd5278aee645ad5786a4b093653, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8593460211266452155, guid: ad7b5fd5278aee645ad5786a4b093653, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.data[0]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8593460211266452155, guid: ad7b5fd5278aee645ad5786a4b093653, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8593460211266452158, guid: ad7b5fd5278aee645ad5786a4b093653, type: 3}
       propertyPath: m_Name
       value: Kart Agent

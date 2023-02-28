@@ -12,11 +12,8 @@ using Unity.VisualScripting;
 public class KartAgent : Agent
 {
     // Config Params
-    [SerializeField] float debugRaycastTime = 2f;
-    [SerializeField] float raycastDistance = 10;
-    [SerializeField] float failRaycastDistance = 1;
     [SerializeField] KartController kartController;
-    [SerializeField] TerrainCollider terrainCollider;
+    [SerializeField] TerrainColliderDetector terrainCollider;
     [SerializeField] RaceCheckpoint[] checkpoints;
     [SerializeField] bool handBreakEnabled = false;
     [SerializeField] bool reverseEnabled = false;
@@ -29,16 +26,12 @@ public class KartAgent : Agent
     // Cached Components
 
     // State
-    Vector3 startPos;
-    Quaternion startRot;
     bool failed = false;
     int checkpointIndex = 0;
 
     public override void Initialize()
     {
-        startPos = kartController.transform.position;
-        startRot = kartController.transform.rotation;
-        ResetScene();
+       // ResetScene();
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -63,7 +56,7 @@ public class KartAgent : Agent
         kartController.right = actions.ContinuousActions[1] > steeringRange;
         kartController.handbreak = actions.ContinuousActions[2] > 0 && handBreakEnabled;
 
-        failed = terrainCollider.agentCollided;
+        failed = terrainCollider.GetAgentCollided();
 
         CheckCheckpoints();
 
@@ -97,29 +90,29 @@ public class KartAgent : Agent
     {
         AddReward(failReward);
         ShowReward();
+        ResetScene();
         EndEpisode();
     }
 
     public override void OnEpisodeBegin()
     {
         ResetScene();
+    }
 
-        foreach(RaceCheckpoint checkpoint in checkpoints)
+    void ResetScene()
+    {
+        failed = false;
+
+        foreach (RaceCheckpoint checkpoint in checkpoints)
         {
             checkpoint.gameObject.SetActive(false);
         }
 
         checkpointIndex = 0;
         checkpoints[checkpointIndex].gameObject.SetActive(true);
-    }
 
-    void ResetScene()
-    {
-        kartController.transform.position = startPos;
-        kartController.transform.rotation = startRot;
-        kartController.GetRigidbody().velocity = Vector3.zero;
-        failed = false;
-        terrainCollider.agentCollided = false;
+        kartController.Reset_();
+        terrainCollider.Reset_();
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)

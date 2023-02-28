@@ -1347,9 +1347,6 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
-  debugRaycastTime: 2
-  raycastDistance: 10
-  failRaycastDistance: 2.5
   kartController: {fileID: 8593460211266452156}
   terrainCollider: {fileID: 0}
   checkpoints:
