@@ -111,5 +111,6 @@ public class KartController : MonoBehaviour
         transform.rotation = startRot;
 
         rigidBody.velocity = Vector3.zero;
+        rigidBody.angularVelocity = Vector3.zero;
     }
 }
