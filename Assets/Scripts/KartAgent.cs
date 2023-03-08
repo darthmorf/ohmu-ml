@@ -17,17 +17,20 @@ public class KartAgent : Agent
     [SerializeField] RaceCheckpoint[] checkpoints;
     [SerializeField] bool handBreakEnabled = false;
     [SerializeField] bool reverseEnabled = false;
- 
+    [SerializeField] float steeringRange = 0.3f;
+
     [Header("Rewards")]
     [SerializeField] float stepReward = 0.001f;
     [SerializeField] float failReward = -1f;
     [SerializeField] float checkpointReward = 0.5f;
+    [SerializeField] float timeOut = 30.0f;
 
     // Cached Components
 
     // State
     bool failed = false;
     int checkpointIndex = 0;
+    float elapsedTime = 0;
 
     public override void Initialize()
     {
@@ -42,7 +45,6 @@ public class KartAgent : Agent
 
     public override void OnActionReceived(ActionBuffers actions)
     {
-        const float steeringRange = 0.3f;
 
         kartController.forward = false;
         kartController.backward = false;
@@ -50,10 +52,11 @@ public class KartAgent : Agent
         kartController.right = false;
         kartController.handbreak = false;
 
-        kartController.forward = actions.ContinuousActions[0] > 0;
-        kartController.backward = actions.ContinuousActions[0] < 0 && reverseEnabled;
-        kartController.left = actions.ContinuousActions[1] < -steeringRange;
-        kartController.right = actions.ContinuousActions[1] > steeringRange;
+        kartController.SetSpeed(Mathf.Abs(actions.ContinuousActions[0]));
+        kartController.SetTurn(actions.ContinuousActions[1]);
+
+        elapsedTime += Time.deltaTime;
+
         kartController.handbreak = actions.ContinuousActions[2] > 0 && handBreakEnabled;
 
         failed = terrainCollider.GetAgentCollided();
@@ -61,10 +64,16 @@ public class KartAgent : Agent
         CheckCheckpoints();
 
         AddReward(kartController.GetRigidbody().velocity.magnitude * stepReward);
+        AddReward(-Mathf.Abs(actions.ContinuousActions[1]) * stepReward);
 
         if (failed || Keyboard.current.rKey.isPressed)
         {
             Failure();
+        }
+
+        if (elapsedTime > timeOut)
+        {
+            ResetScene();
         }
 
         ShowReward();
@@ -91,17 +100,17 @@ public class KartAgent : Agent
         AddReward(failReward);
         ShowReward();
         ResetScene();
-        EndEpisode();
     }
 
     public override void OnEpisodeBegin()
     {
-        ResetScene();
+        //ResetScene();
     }
 
     void ResetScene()
     {
         failed = false;
+        elapsedTime = 0;
 
         foreach (RaceCheckpoint checkpoint in checkpoints)
         {
@@ -113,6 +122,7 @@ public class KartAgent : Agent
 
         kartController.Reset_();
         terrainCollider.Reset_();
+        EndEpisode();
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)

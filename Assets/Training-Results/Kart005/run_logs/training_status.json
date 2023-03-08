@@ -1,0 +1,56 @@
+{
+    "Racecar": {
+        "checkpoints": [
+            {
+                "steps": 7080,
+                "file_path": "./Assets/Training-Results\\Kart005\\Racecar\\Racecar-7080.onnx",
+                "reward": -3138.505002082636,
+                "creation_time": 1678202208.5182285,
+                "auxillary_file_paths": [
+                    "./Assets/Training-Results\\Kart005\\Racecar\\Racecar-7080.pt"
+                ]
+            },
+            {
+                "steps": 999949,
+                "file_path": "./Assets/Training-Results\\Kart005\\Racecar\\Racecar-999949.onnx",
+                "reward": null,
+                "creation_time": 1678269231.8457072,
+                "auxillary_file_paths": [
+                    "./Assets/Training-Results\\Kart005\\Racecar\\Racecar-999949.pt"
+                ]
+            },
+            {
+                "steps": 1499937,
+                "file_path": "./Assets/Training-Results\\Kart005\\Racecar\\Racecar-1499937.onnx",
+                "reward": 159.503981590271,
+                "creation_time": 1678281013.049407,
+                "auxillary_file_paths": [
+                    "./Assets/Training-Results\\Kart005\\Racecar\\Racecar-1499937.pt"
+                ]
+            },
+            {
+                "steps": 1500001,
+                "file_path": "./Assets/Training-Results\\Kart005\\Racecar\\Racecar-1500001.onnx",
+                "reward": 159.503981590271,
+                "creation_time": 1678281013.2194064,
+                "auxillary_file_paths": [
+                    "./Assets/Training-Results\\Kart005\\Racecar\\Racecar-1500001.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1500001,
+            "file_path": "./Assets/Training-Results\\Kart005\\Racecar.onnx",
+            "reward": 159.503981590271,
+            "creation_time": 1678281013.2194064,
+            "auxillary_file_paths": [
+                "./Assets/Training-Results\\Kart005\\Racecar\\Racecar-1500001.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.29.0",
+        "torch_version": "1.7.0+cu110"
+    }
+}

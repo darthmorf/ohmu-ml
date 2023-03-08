@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using TreeEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Quaternion = UnityEngine.Quaternion;
@@ -100,6 +101,19 @@ public class KartController : MonoBehaviour
         frontR.steerAngle = currentSteerAngle;
     }
 
+    public void SetSpeed(float newSpeed)
+    {
+        frontL.motorTorque = speed * newSpeed;
+        frontR.motorTorque = speed * newSpeed;
+    }
+
+    public void SetTurn(float newAngle)
+    {
+        frontL.steerAngle = newAngle * maxSteerAngle;
+        frontR.steerAngle = newAngle * maxSteerAngle;
+    }
+
+
     public Rigidbody GetRigidbody()
     {
         return rigidBody;
@@ -109,6 +123,12 @@ public class KartController : MonoBehaviour
     {
         transform.position = startPos;
         transform.rotation = startRot;
+
+        frontL.steerAngle = 0;
+        frontR.steerAngle = 0;
+
+        frontL.motorTorque = 0;
+        frontR.motorTorque = 0;
 
         rigidBody.velocity = Vector3.zero;
         rigidBody.angularVelocity = Vector3.zero;

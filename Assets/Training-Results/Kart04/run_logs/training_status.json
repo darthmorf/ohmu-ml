@@ -1,0 +1,29 @@
+{
+    "Racecar": {
+        "checkpoints": [
+            {
+                "steps": 1134,
+                "file_path": "./Assets/Training-Results\\Kart04\\Racecar\\Racecar-1134.onnx",
+                "reward": 3.8876769175896277,
+                "creation_time": 1677756215.3428926,
+                "auxillary_file_paths": [
+                    "./Assets/Training-Results\\Kart04\\Racecar\\Racecar-1134.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1134,
+            "file_path": "./Assets/Training-Results\\Kart04\\Racecar.onnx",
+            "reward": 3.8876769175896277,
+            "creation_time": 1677756215.3428926,
+            "auxillary_file_paths": [
+                "./Assets/Training-Results\\Kart04\\Racecar\\Racecar-1134.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.29.0",
+        "torch_version": "1.7.0+cu110"
+    }
+}

@@ -1,0 +1,56 @@
+{
+    "Racecar": {
+        "checkpoints": [
+            {
+                "steps": 499971,
+                "file_path": "./Assets/Training-Results\\Kart002\\Racecar\\Racecar-499971.onnx",
+                "reward": 1.8929286949774797,
+                "creation_time": 1677076785.0347219,
+                "auxillary_file_paths": [
+                    "./Assets/Training-Results\\Kart002\\Racecar\\Racecar-499971.pt"
+                ]
+            },
+            {
+                "steps": 999978,
+                "file_path": "./Assets/Training-Results\\Kart002\\Racecar\\Racecar-999978.onnx",
+                "reward": 1.888180619380513,
+                "creation_time": 1677083163.0885503,
+                "auxillary_file_paths": [
+                    "./Assets/Training-Results\\Kart002\\Racecar\\Racecar-999978.pt"
+                ]
+            },
+            {
+                "steps": 1499945,
+                "file_path": "./Assets/Training-Results\\Kart002\\Racecar\\Racecar-1499945.onnx",
+                "reward": 1.2405179668040502,
+                "creation_time": 1677089005.3714345,
+                "auxillary_file_paths": [
+                    "./Assets/Training-Results\\Kart002\\Racecar\\Racecar-1499945.pt"
+                ]
+            },
+            {
+                "steps": 1500009,
+                "file_path": "./Assets/Training-Results\\Kart002\\Racecar\\Racecar-1500009.onnx",
+                "reward": 1.2405179668040502,
+                "creation_time": 1677089005.458435,
+                "auxillary_file_paths": [
+                    "./Assets/Training-Results\\Kart002\\Racecar\\Racecar-1500009.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1500009,
+            "file_path": "./Assets/Training-Results\\Kart002\\Racecar.onnx",
+            "reward": 1.2405179668040502,
+            "creation_time": 1677089005.458435,
+            "auxillary_file_paths": [
+                "./Assets/Training-Results\\Kart002\\Racecar\\Racecar-1500009.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.29.0",
+        "torch_version": "1.13.1+cu116"
+    }
+}
