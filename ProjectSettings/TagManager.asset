@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Agent
   - Ball
+  - Terrain
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - UI
   - Editor Only
   - Terrain
-  - 
+  - Game Only
   - 
   - 
   - 

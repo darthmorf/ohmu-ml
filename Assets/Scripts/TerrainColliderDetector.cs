@@ -16,7 +16,7 @@ public class TerrainColliderDetector : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log($"Collider:{agentCollided}");
+        //Debug.Log($"Collider:{agentCollided}");
     }
 
     public void Reset_()

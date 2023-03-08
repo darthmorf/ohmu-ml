@@ -13,7 +13,7 @@ public class KartAgent : Agent
 {
     // Config Params
     [SerializeField] KartController kartController;
-    [SerializeField] TerrainColliderDetector terrainCollider;
+    [SerializeField] TerrainColliderDetector[] terrainColliders;
     [SerializeField] RaceCheckpoint[] checkpoints;
     [SerializeField] bool handBreakEnabled = false;
     [SerializeField] bool reverseEnabled = false;
@@ -35,6 +35,9 @@ public class KartAgent : Agent
     public override void Initialize()
     {
        // ResetScene();
+       terrainColliders = FindObjectsOfType<TerrainColliderDetector>();
+
+        Time.timeScale = 1f;    
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -59,7 +62,14 @@ public class KartAgent : Agent
 
         kartController.handbreak = actions.ContinuousActions[2] > 0 && handBreakEnabled;
 
-        failed = terrainCollider.GetAgentCollided();
+        foreach (TerrainColliderDetector terrainCollider in terrainColliders)
+        {
+            if (terrainCollider.GetAgentCollided())
+            {
+                failed = true;
+                break;
+            }
+        }
 
         CheckCheckpoints();
 
@@ -121,7 +131,12 @@ public class KartAgent : Agent
         checkpoints[checkpointIndex].gameObject.SetActive(true);
 
         kartController.Reset_();
-        terrainCollider.Reset_();
+
+        foreach(TerrainColliderDetector terrainColliderDetector in terrainColliders) 
+        {
+            terrainColliderDetector.Reset_();
+        }
+
         EndEpisode();
     }
 
