@@ -24,6 +24,7 @@ public class KartAgent : Agent
     [SerializeField] float failReward = -1f;
     [SerializeField] float checkpointReward = 0.5f;
     [SerializeField] float timeOut = 30.0f;
+    [SerializeField] [Range(1f, 20f)] float timeScale = 1f;
 
     // Cached Components
 
@@ -36,8 +37,6 @@ public class KartAgent : Agent
     {
        // ResetScene();
        terrainColliders = FindObjectsOfType<TerrainColliderDetector>();
-
-        Time.timeScale = 1f;    
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -48,6 +47,7 @@ public class KartAgent : Agent
 
     public override void OnActionReceived(ActionBuffers actions)
     {
+        Time.timeScale = timeScale;
 
         kartController.forward = false;
         kartController.backward = false;
