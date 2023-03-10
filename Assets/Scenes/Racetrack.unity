@@ -402,8 +402,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 53402700}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -139.4, y: 0, z: -80.1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -140.49423, y: 1.0119777, z: -82.47559}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -423,8 +423,8 @@ Transform:
   - {fileID: 358870592}
   - {fileID: 47410956}
   - {fileID: 587020883}
-  m_Father: {fileID: 257438257}
-  m_RootOrder: 2
+  m_Father: {fileID: 1671047581}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &60267180
 GameObject:
@@ -940,8 +940,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 428587139}
-  - {fileID: 1732595551}
-  - {fileID: 53402701}
   - {fileID: 1671047581}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -3363,15 +3361,17 @@ Transform:
   m_GameObject: {fileID: 1671047580}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1.0942345, y: -1.0119777, z: 2.375597}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2594734992680953903}
   - {fileID: 9048517196208998084}
   - {fileID: 1779298636}
   - {fileID: 1456287866}
+  - {fileID: 1732595551}
+  - {fileID: 53402701}
   m_Father: {fileID: 257438257}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1674270839
 GameObject:
@@ -3483,13 +3483,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1732595550}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23.1, y: -0.89, z: -0.23}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 22.005766, y: 0.12197769, z: -2.605597}
   m_LocalScale: {x: 0.2, y: 1, z: 0.9}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 257438257}
-  m_RootOrder: 1
+  m_Father: {fileID: 1671047581}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1732595552
 MeshCollider:
@@ -4430,7 +4430,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4208619072939178355}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.07, y: 0.82, z: -2.57}
+  m_LocalPosition: {x: 38.6, y: 0.82, z: -4.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4468,7 +4468,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4208619073489826656}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -9.11, y: 0, z: 0.61}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4552,9 +4552,10 @@ MonoBehaviour:
   reverseEnabled: 0
   steeringRange: 0.5
   stepReward: 0.001
-  failReward: -1
+  failReward: -5
   checkpointReward: 1
-  timeOut: 30
+  timeOut: 240
+  timeScale: 1
 --- !u!114 &4208619073489826661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4577,7 +4578,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: 4558705fa24411e47974575aae6adea5, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: Racecar
@@ -4603,7 +4604,7 @@ MonoBehaviour:
   m_RaysPerDirection: 6
   m_MaxRayDegrees: 90
   m_SphereCastRadius: 0
-  m_RayLength: 10
+  m_RayLength: 20
   m_RayLayerMask:
     serializedVersion: 2
     m_Bits: 4294967176
