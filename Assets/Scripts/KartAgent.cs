@@ -51,18 +51,10 @@ public class KartAgent : Agent
     {
         Time.timeScale = timeScale;
 
-        kartController.forward = false;
-        kartController.backward = false;
-        kartController.left = false;
-        kartController.right = false;
-        kartController.handbreak = false;
-
         kartController.SetSpeed(Mathf.Abs(actions.ContinuousActions[0]));
         kartController.SetTurn(actions.ContinuousActions[1]);
 
         elapsedTime += Time.deltaTime;
-
-        kartController.handbreak = actions.ContinuousActions[2] > 0 && handBreakEnabled;
 
         foreach (TerrainColliderDetector terrainCollider in terrainColliders)
         {

@@ -23,13 +23,6 @@ public class KartController : MonoBehaviour
     [SerializeField] WheelCollider backL;
     [SerializeField] WheelCollider backR;
 
-
-    [NonSerialized] public bool forward = false;
-    [NonSerialized] public bool backward = false;
-    [NonSerialized] public bool left = false;
-    [NonSerialized] public bool right = false;
-    [NonSerialized] public bool handbreak = false;
-
     // State
     float currentSteerAngle = 0;
     Vector3 startPos;
@@ -49,7 +42,7 @@ public class KartController : MonoBehaviour
 
     void DoMovement()
     {
-        if (Keyboard.current.spaceKey.isPressed || handbreak)
+        if (Keyboard.current.spaceKey.isPressed)
         {
             frontL.brakeTorque = brakeTorque;
             frontR.brakeTorque = brakeTorque;
@@ -65,12 +58,12 @@ public class KartController : MonoBehaviour
         }
         
         
-        if (Keyboard.current.wKey.isPressed || forward)
+        if (Keyboard.current.wKey.isPressed)
         {
             frontL.motorTorque = speed;
             frontR.motorTorque = speed;
         }
-        else if (Keyboard.current.sKey.isPressed || backward)
+        else if (Keyboard.current.sKey.isPressed)
         {
             frontL.motorTorque = -speed / 2;
             frontR.motorTorque = -speed / 2;
@@ -78,11 +71,11 @@ public class KartController : MonoBehaviour
 
         
 
-        if (Keyboard.current.aKey.isPressed || right)
+        if (Keyboard.current.aKey.isPressed)
         {
             currentSteerAngle -= steerSpeed * Time.deltaTime;
         }
-        else if (Keyboard.current.dKey.isPressed || left)
+        else if (Keyboard.current.dKey.isPressed)
         {
             currentSteerAngle += steerSpeed * Time.deltaTime;
         }
