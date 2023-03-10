@@ -14,7 +14,7 @@ public class KartAgent : Agent
     // Config Params
     [SerializeField] KartController kartController;
     [SerializeField] TerrainColliderDetector[] terrainColliders;
-    [SerializeField] RaceCheckpoint[] checkpoints;
+    [SerializeField] GameObject checkpointParent;
     [SerializeField] bool handBreakEnabled = false;
     [SerializeField] bool reverseEnabled = false;
     [SerializeField] float steeringRange = 0.3f;
@@ -32,11 +32,13 @@ public class KartAgent : Agent
     bool failed = false;
     int checkpointIndex = 0;
     float elapsedTime = 0;
+    RaceCheckpoint[] checkpoints;
 
     public override void Initialize()
     {
        // ResetScene();
        terrainColliders = FindObjectsOfType<TerrainColliderDetector>();
+       checkpoints = checkpointParent.GetComponentsInChildren<RaceCheckpoint>(true);
     }
 
     public override void CollectObservations(VectorSensor sensor)
