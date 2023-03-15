@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 using System;
 using UnityEditor.PackageManager.Requests;
 using Unity.VisualScripting;
+using Unity.MLAgents.Policies;
 
 public class KartAgent : Agent
 {
@@ -18,6 +19,7 @@ public class KartAgent : Agent
     [SerializeField] bool handBreakEnabled = false;
     [SerializeField] bool reverseEnabled = false;
     [SerializeField] float steeringRange = 0.3f;
+    [SerializeField] bool manualControl = false;
 
     [Header("Rewards")]
     [SerializeField] float stepReward = 0.001f;
@@ -36,9 +38,9 @@ public class KartAgent : Agent
 
     public override void Initialize()
     {
-       // ResetScene();
-       terrainColliders = FindObjectsOfType<TerrainColliderDetector>();
-       checkpoints = checkpointParent.GetComponentsInChildren<RaceCheckpoint>(true);
+        // ResetScene();
+        terrainColliders = FindObjectsOfType<TerrainColliderDetector>();
+        checkpoints = checkpointParent.GetComponentsInChildren<RaceCheckpoint>(true);
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -51,8 +53,11 @@ public class KartAgent : Agent
     {
         Time.timeScale = timeScale;
 
-        kartController.SetSpeed(Mathf.Abs(actions.ContinuousActions[0]));
-        kartController.SetTurn(actions.ContinuousActions[1]);
+        if (!manualControl)
+        {
+            kartController.SetSpeed(Mathf.Abs(actions.ContinuousActions[0]));
+            kartController.SetTurn(actions.ContinuousActions[1]);
+        }
 
         elapsedTime += Time.deltaTime;
 
