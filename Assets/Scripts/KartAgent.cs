@@ -51,7 +51,7 @@ public class KartAgent : Agent
 
     public override void OnActionReceived(ActionBuffers actions)
     {
-        Time.timeScale = timeScale;
+        Time.timeScale = timeScale; // This shouldn't be needed, but is nice for demos
 
         if (!manualControl)
         {

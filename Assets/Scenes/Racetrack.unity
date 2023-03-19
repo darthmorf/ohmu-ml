@@ -9252,7 +9252,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4208619072939178355}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 38.6, y: 0.82, z: -104.5}
+  m_LocalPosition: {x: 38.6, y: 0.82, z: 94.098}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9327,7 +9327,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4208619073489826656}
   serializedVersion: 2
-  m_Mass: 1000
+  m_Mass: 2000
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -9353,15 +9353,16 @@ MonoBehaviour:
   MaxStep: 0
   kartController: {fileID: 4208619073489826658}
   terrainColliders: []
-  checkpointParent: {fileID: 1704687243}
+  checkpointParent: {fileID: 53402700}
   handBreakEnabled: 0
   reverseEnabled: 0
   steeringRange: 0.5
+  manualControl: 0
   stepReward: 0.001
   failReward: -5
   checkpointReward: 1
   timeOut: 240
-  timeScale: 1
+  timeScale: 20
 --- !u!114 &4208619073489826661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9378,13 +9379,13 @@ MonoBehaviour:
     VectorObservationSize: 2
     NumStackedVectorObservations: 1
     m_ActionSpec:
-      m_NumContinuousActions: 3
-      BranchSizes: 01000000
-    VectorActionSize: 
+      m_NumContinuousActions: 2
+      BranchSizes: 
+    VectorActionSize: 02000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 4558705fa24411e47974575aae6adea5, type: 3}
+  m_Model: {fileID: 0}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: Racecar
