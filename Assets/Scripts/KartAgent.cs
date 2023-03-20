@@ -9,6 +9,7 @@ using System;
 using UnityEditor.PackageManager.Requests;
 using Unity.VisualScripting;
 using Unity.MLAgents.Policies;
+using Assets.Scripts;
 
 public class KartAgent : Agent
 {
@@ -33,8 +34,14 @@ public class KartAgent : Agent
     // State
     bool failed = false;
     int checkpointIndex = 0;
-    float elapsedTime = 0;
+    float cumulativeElapsedTime = 0;
+    float currentElapsedTime;
     RaceCheckpoint[] checkpoints;
+
+    // Logging
+    LogItem logItem = new LogItem();
+    int checkpointCount = 0;
+    string startDate = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
 
     public override void Initialize()
     {
@@ -59,7 +66,6 @@ public class KartAgent : Agent
             kartController.SetTurn(actions.ContinuousActions[1]);
         }
 
-        elapsedTime += Time.deltaTime;
 
         foreach (TerrainColliderDetector terrainCollider in terrainColliders)
         {
@@ -75,12 +81,22 @@ public class KartAgent : Agent
         AddReward(kartController.GetRigidbody().velocity.magnitude * stepReward);
         AddReward(-Mathf.Abs(actions.ContinuousActions[1]) * stepReward);
 
+        cumulativeElapsedTime += Time.deltaTime;
+
+        logItem.iterationTime.Add(Time.deltaTime);
+        logItem.cumulativeIterationTime.Add(cumulativeElapsedTime);
+        logItem.reward.Add(GetCumulativeReward());
+        logItem.checkpointCount.Add(checkpointCount);
+        logItem.velocity.Add(kartController.GetRigidbody().velocity.magnitude);
+        logItem.timedOut = cumulativeElapsedTime > timeOut;
+
         if (failed || Keyboard.current.rKey.isPressed)
         {
-            Failure();
+            AddReward(failReward);
+            ResetScene();
         }
 
-        if (elapsedTime > timeOut)
+        if (cumulativeElapsedTime > timeOut)
         {
             ResetScene();
         }
@@ -101,14 +117,9 @@ public class KartAgent : Agent
 
             checkpointIndex = (checkpointIndex + 1) % checkpoints.Length;
             checkpoints[checkpointIndex].gameObject.SetActive(true);
-        }
-    }
 
-    void Failure()
-    {
-        AddReward(failReward);
-        ShowReward();
-        ResetScene();
+            checkpointCount++;
+        }
     }
 
     public override void OnEpisodeBegin()
@@ -118,8 +129,12 @@ public class KartAgent : Agent
 
     void ResetScene()
     {
+        LoggingController.LogItem(logItem, startDate);
+        logItem = new LogItem();
+        checkpointCount = 0;
+
         failed = false;
-        elapsedTime = 0;
+        cumulativeElapsedTime = 0;
 
         foreach (RaceCheckpoint checkpoint in checkpoints)
         {
