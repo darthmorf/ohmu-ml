@@ -10,6 +10,7 @@ using UnityEditor.PackageManager.Requests;
 using Unity.VisualScripting;
 using Unity.MLAgents.Policies;
 using Assets.Scripts;
+using System.Linq;
 
 public class KartAgent : Agent
 {
@@ -35,13 +36,13 @@ public class KartAgent : Agent
     bool failed = false;
     int checkpointIndex = 0;
     float cumulativeElapsedTime = 0;
-    float currentElapsedTime;
     RaceCheckpoint[] checkpoints;
 
     // Logging
     LogItem logItem = new LogItem();
     int checkpointCount = 0;
-    string startDate = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
+    string startDateTime = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
+    List<float> velocities = new List<float>();
 
     public override void Initialize()
     {
@@ -83,12 +84,7 @@ public class KartAgent : Agent
 
         cumulativeElapsedTime += Time.deltaTime;
 
-        logItem.iterationTime.Add(Time.deltaTime);
-        logItem.cumulativeIterationTime.Add(cumulativeElapsedTime);
-        logItem.reward.Add(GetCumulativeReward());
-        logItem.checkpointCount.Add(checkpointCount);
-        logItem.velocity.Add(kartController.GetRigidbody().velocity.magnitude);
-        logItem.timedOut = cumulativeElapsedTime > timeOut;
+        velocities.Add(kartController.GetRigidbody().velocity.magnitude);
 
         if (failed || Keyboard.current.rKey.isPressed)
         {
@@ -127,11 +123,24 @@ public class KartAgent : Agent
         //ResetScene();
     }
 
+    void Log()
+    {
+        logItem.iterationTime = cumulativeElapsedTime;
+        logItem.reward = GetCumulativeReward();
+        logItem.checkpointCount = checkpointCount;
+        logItem.averageVelocity = velocities.Average();
+        logItem.timedOut = cumulativeElapsedTime > timeOut;
+
+        LoggingController.LogItem(logItem, startDateTime);
+    }
+
     void ResetScene()
     {
-        LoggingController.LogItem(logItem, startDate);
+        Log();
+        
         logItem = new LogItem();
         checkpointCount = 0;
+        velocities = new List<float>();
 
         failed = false;
         cumulativeElapsedTime = 0;

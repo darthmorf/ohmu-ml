@@ -11,19 +11,18 @@ namespace Assets.Scripts
 {
     class LogItem
     {
-        public int iterationNumber;
-        public List<float> iterationTime = new List<float>();
-        public List<float> cumulativeIterationTime = new List<float>();
-        public List<float> reward = new List<float>();
-        public List<int> checkpointCount = new List<int>();
-        public List<float> velocity = new List<float>();
+        public int episodeNumber;
+        public float iterationTime;
+        public float reward;
+        public int checkpointCount;
+        public float averageVelocity;
         public bool timedOut = false;
     }
 
 
     static class LoggingController
     {
-        const string logDir = "./logs";
+        const string logDir = "./training-records";
 
         public static void LogItem(LogItem logItem, string fileName)
         {
@@ -36,7 +35,7 @@ namespace Assets.Scripts
                 logItems = JsonConvert.DeserializeObject<List<LogItem>>(fileContents);
             }
              
-            logItem.iterationNumber = logItems.Count;
+            logItem.episodeNumber = logItems.Count;
             logItems.Add(logItem);
 
             string json = JsonConvert.SerializeObject(logItems);
