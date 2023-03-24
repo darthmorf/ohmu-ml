@@ -2,24 +2,6 @@
     "Racecar": {
         "checkpoints": [
             {
-                "steps": 1499984,
-                "file_path": "./Assets/Training-Results\\SAC-Kart002\\Racecar\\Racecar-1499984.onnx",
-                "reward": null,
-                "creation_time": 1679351068.6317189,
-                "auxillary_file_paths": [
-                    "./Assets/Training-Results\\SAC-Kart002\\Racecar\\Racecar-1499984.pt"
-                ]
-            },
-            {
-                "steps": 1982786,
-                "file_path": "./Assets/Training-Results\\SAC-Kart002\\Racecar\\Racecar-1982786.onnx",
-                "reward": null,
-                "creation_time": 1679391870.3462594,
-                "auxillary_file_paths": [
-                    "./Assets/Training-Results\\SAC-Kart002\\Racecar\\Racecar-1982786.pt"
-                ]
-            },
-            {
                 "steps": 1999970,
                 "file_path": "./Assets/Training-Results\\SAC-Kart002\\Racecar\\Racecar-1999970.onnx",
                 "reward": null,
@@ -45,15 +27,33 @@
                 "auxillary_file_paths": [
                     "./Assets/Training-Results\\SAC-Kart002\\Racecar\\Racecar-2801701.pt"
                 ]
+            },
+            {
+                "steps": 2999997,
+                "file_path": "./Assets/Training-Results\\SAC-Kart002\\Racecar\\Racecar-2999997.onnx",
+                "reward": null,
+                "creation_time": 1679652753.5242314,
+                "auxillary_file_paths": [
+                    "./Assets/Training-Results\\SAC-Kart002\\Racecar\\Racecar-2999997.pt"
+                ]
+            },
+            {
+                "steps": 3000061,
+                "file_path": "./Assets/Training-Results\\SAC-Kart002\\Racecar\\Racecar-3000061.onnx",
+                "reward": null,
+                "creation_time": 1679652753.5892322,
+                "auxillary_file_paths": [
+                    "./Assets/Training-Results\\SAC-Kart002\\Racecar\\Racecar-3000061.pt"
+                ]
             }
         ],
         "final_checkpoint": {
-            "steps": 2801701,
+            "steps": 3000061,
             "file_path": "./Assets/Training-Results\\SAC-Kart002\\Racecar.onnx",
             "reward": null,
-            "creation_time": 1679407966.570197,
+            "creation_time": 1679652753.5892322,
             "auxillary_file_paths": [
-                "./Assets/Training-Results\\SAC-Kart002\\Racecar\\Racecar-2801701.pt"
+                "./Assets/Training-Results\\SAC-Kart002\\Racecar\\Racecar-3000061.pt"
             ]
         }
     },
