@@ -22,11 +22,16 @@ public class KartController : MonoBehaviour
     [SerializeField] WheelCollider frontR;
     [SerializeField] WheelCollider backL;
     [SerializeField] WheelCollider backR;
+    [SerializeField] GameObject positionTracker;
+    [SerializeField] float trackFrequency;
+    [SerializeField] bool trackMovement = true;
 
     // State
     float currentSteerAngle = 0;
     Vector3 startPos;
     Quaternion startRot;
+    float elapsedTime = 0;
+    List<GameObject> trackedPositions = new List<GameObject>();
 
     void Start()
     {
@@ -38,6 +43,18 @@ public class KartController : MonoBehaviour
     private void Update()
     {
         DoMovement();
+
+        elapsedTime += Time.deltaTime;
+
+        if (trackMovement && elapsedTime >= trackFrequency)
+        {
+            GameObject newObject = Instantiate(positionTracker);
+            newObject.transform.position = transform.position;
+            newObject.SetActive(true);
+            elapsedTime = 0;
+
+            trackedPositions.Add(newObject);
+        }
     }
 
     void DoMovement()
@@ -125,5 +142,14 @@ public class KartController : MonoBehaviour
 
         rigidBody.velocity = Vector3.zero;
         rigidBody.angularVelocity = Vector3.zero;
+
+        elapsedTime = 0;
+
+        foreach (GameObject trackedPosition in trackedPositions)
+        {
+            Destroy(trackedPosition);
+        }
+
+        trackedPositions = new List<GameObject>();
     }
 }
