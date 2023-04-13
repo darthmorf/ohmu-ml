@@ -54,7 +54,11 @@ public class KartAgent : Agent
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation(kartController.GetRigidbody().velocity.magnitude);
-        sensor.AddObservation(Vector3.Distance(transform.position, checkpoints[checkpointIndex].transform.position));
+
+        if (checkpoints.Length > 0)
+        {
+            sensor.AddObservation(Vector3.Distance(transform.position, checkpoints[checkpointIndex].transform.position));
+        }
     }
 
     public override void OnActionReceived(ActionBuffers actions)
@@ -102,7 +106,7 @@ public class KartAgent : Agent
 
     void CheckCheckpoints()
     {
-        if (checkpoints[checkpointIndex].KartHitCheckpoint())
+        if (checkpoints.Length > 0 && checkpoints[checkpointIndex].KartHitCheckpoint())
         {
             Debug.Log($"Checkpoint {checkpointIndex+1} hit!");
 
@@ -151,7 +155,10 @@ public class KartAgent : Agent
         }
 
         checkpointIndex = 0;
-        checkpoints[checkpointIndex].gameObject.SetActive(true);
+        if (checkpoints.Length > 0)
+        {
+            checkpoints[checkpointIndex].gameObject.SetActive(true);
+        }
 
         kartController.Reset_();
 
