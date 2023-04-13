@@ -262,7 +262,7 @@ GameObject:
   - component: {fileID: 507658670862567629}
   - component: {fileID: 8789993577265547333}
   - component: {fileID: 5768437148251776491}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Guard
   m_TagString: Terrain
   m_Icon: {fileID: 0}
