@@ -24,16 +24,24 @@ def process_data(mode):
   minReward =  999999
   maxAvgReward = -999999
   minAvgReward =  999999
+  maxVelocity = -1
+  maxAvgVelocity = -1
   cumulativeTime = 0
 
-  csvData = "EpisodeNumber,IterationTime,CumulativeIterationTime,Reward,AverageReward,CheckpointCount,AverageVelocity,TimedOut\n"
+  csvData = "EpisodeNumber,IterationTime,AverageIterationTime,CumulativeIterationTime,Reward,AverageReward,CheckpointCount,Velocity,AverageVelocity,TimedOut\n"
 
   averageRewards = []
+  averageVelocities = []
+  averageTimes = []
   
   for item in data:
     cumulativeTime += item["iterationTime"]
     averageRewards.append(item["reward"])
     averageReward = sum(averageRewards) / len(averageRewards)
+    averageVelocities.append(item["averageVelocity"])
+    averageVelocity = sum(averageVelocities) / len(averageVelocities)
+    averageTimes.append(item["iterationTime"])
+    averageTime = sum(averageTimes) / len(averageTimes)
     
     item["episodeNumber"] = index
     index += 1
@@ -52,7 +60,17 @@ def process_data(mode):
       minAvgReward = averageReward
 
 
-    csvData += f'{item["episodeNumber"]},{item["iterationTime"]},{cumulativeTime},{item["reward"]},{averageReward},{item["checkpointCount"]},{item["averageVelocity"]},{item["timedOut"]}\n'
+    if item["averageVelocity"] > maxVelocity:
+      maxVelocity = item["averageVelocity"]
+
+    if item["averageVelocity"] > maxVelocity:
+      maxVelocity = item["averageVelocity"]
+
+    if averageVelocity > maxAvgVelocity:
+      maxAvgVelocity = averageVelocity
+
+
+    csvData += f'{item["episodeNumber"]},{item["iterationTime"]},{averageTime},{cumulativeTime},{item["reward"]},{averageReward},{item["checkpointCount"]},{item["averageVelocity"]},{averageVelocity},{item["timedOut"]}\n'
 
   with open(f"{mode}-data.csv", 'w') as f:
       f.write(csvData)
@@ -63,6 +81,8 @@ def process_data(mode):
   print(f'Min Avg Reward: {minAvgReward}')
   print(f'Max Avg Reward: {maxAvgReward}')
   print(f'Cumulative Iteration: {cumulativeTime}')
+  print(f'Max Speed: {maxVelocity}')
+  print(f'Max Avg Speed: {maxAvgVelocity}')
   print(f'Written data to csv.\n\n')
 
 
